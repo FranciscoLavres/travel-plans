@@ -1,45 +1,68 @@
 import requests
-from src.exceptions import APIError
-import os
 
-chave = os.getenv("API_KEY")
 
 def obter_densidade(nome):
-    dados = requests.get(f"https://restcountries.com/v3.1/name/{nome}")
-    dados_json = dados.json()
+    try:
+        dados = requests.get(f"https://restcountries.com/v3.1/name/{nome}")
+        dados_json = dados.json()
 
-    area_pais = dados_json[0]["area"]
+        area_pais = dados_json[0]["area"]
+        populacao_pais = dados_json[0]["population"]
+        densidade = populacao_pais / area_pais
 
-    populacao_pais = dados_json[0]["population"]
+        if densidade < 50:
+            fator = 0.8
+        elif densidade < 150:
+            fator = 1.1
+        else:
+            fator = 1.5
 
-    densidade = populacao_pais / area_pais
+        return fator
 
-    if densidade < 50:
-        fator = 0.8
-    elif densidade < 150:
-        fator = 1.1
-    else:
-        fator = 1.5
-
-    return fator
+    except Exception:
+        print("Erro ao buscar dados do pais. Verifique o nome digitado.")
+        return None
 
 
 def obter_clima(cidade):
-    dados = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={chave}&units=metric")
+    try:
+        # Busca as coordenadas da cidade pelo nome
+        geo = requests.get(f"https://geocoding-api.open-meteo.com/v1/search?name={cidade}&count=1")
+        geo_json = geo.json()
 
-    dados_json = dados.json()
+        latitude = geo_json["results"][0]["latitude"]
+        longitude = geo_json["results"][0]["longitude"]
 
-    clima = dados_json["weather"][0]["description"]
+        # Busca o clima usando as coordenadas
+        clima = requests.get(
+            f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true"
+        )
+        clima_json = clima.json()
 
-    nota_clima = None
+        codigo = clima_json["current_weather"]["weathercode"]
 
-    if "rain" in clima:
-        nota_clima = "ruim"
+        # Codigos WMO:
+        # 0 = ceu limpo
+        # 1, 2, 3 = parcialmente nublado
+        # 51+ = chuva, neve, tempestade
+        if codigo == 0:
+            return "bom"
+        elif codigo <= 3:
+            return "normal"
+        else:
+            return "ruim"
 
-    if "clouds" in clima:
-        nota_clima = "normal"
+    except Exception:
+        print("Erro ao buscar clima. Verifique o nome da cidade.")
+        return None
 
-    if "clear" in clima:
-        nota_clima = "bom"
 
-    return nota_clima
+def obter_cotacao_dolar():
+    try:
+        dados = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
+        dados_json = dados.json()
+        cotacao = dados_json["rates"]["BRL"]
+        return cotacao
+    except Exception:
+        print("Erro ao buscar cotacao do dolar.")
+        return None

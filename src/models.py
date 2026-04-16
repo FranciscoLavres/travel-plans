@@ -6,13 +6,13 @@ class Viagem:
 
     def __init__(self, pais, cidade, orcamento):
         if not pais:
-            raise ValueError("País inválido.")
+            raise ValueError("Pais invalido.")
 
         if not cidade:
-            raise ValueError("Cidade inválida.")
+            raise ValueError("Cidade invalida.")
 
         if orcamento < 0:
-            raise ValueError("Orçamento inválido por ser valor negativo.")
+            raise ValueError("Orcamento invalido por ser valor negativo.")
 
         self.pais = pais
         self.cidade = cidade
@@ -24,9 +24,18 @@ class Viagem:
         return self.orcamento >= self.custo_aproximado
 
     def planejar_viagem(self):
+        try:
+            densidade = obter_densidade(self.pais)
+            clima = obter_clima(self.cidade)
 
-        densidade = obter_densidade(self.pais)
-        clima = obter_clima(self.cidade)
+            if densidade is None or clima is None:
+                print("Nao foi possivel planejar a viagem.")
+                return False
 
-        self.custo_aproximado = calcular_custo(densidade, clima)
+            self.clima = clima
+            self.custo_aproximado = calcular_custo(densidade, clima)
+            return True
 
+        except Exception:
+            print("Erro ao planejar a viagem.")
+            return False
