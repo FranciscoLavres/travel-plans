@@ -6,18 +6,18 @@ Professor: Fernando Henrique Vieira Trindade
 Universidade Tiradentes / SE
 
 ## Descrição do projeto
-O projeto consiste em um Simulador de Investimentos desenvolvido em Python, capaz de calcular o crescimento de um capital ao longo do tempo com base em juros compostos. O sistema permite ao usuário definir um valor inicial, aportes mensais, taxa de juros e período de investimento, retornando o valor final, o total investido e os rendimentos obtidos.
-
-Além disso, o simulador inclui funcionalidades extras como comparação entre diferentes cenários de investimento, armazenamento de simulações e conversão de valores para dólar utilizando uma API externa, tornando a aplicação mais completa e próxima de um sistema real.
-
+Sistema em Python que planeja viagens com base em dados externos. Ele utiliza as APIs da OpenWeather e REST Countries 
+para obter clima e informações do país, calcula um custo estimado e verifica se a viagem é viável conforme o orçamento do usuário.
 ## Instruções de execução
 
 1. Certifique-se de ter o Python instalado (versão 3.x)
 2. Instale as dependências do projeto:
    `pip install -r requirements.txt`
-3. Execute o arquivo principal:
+3. Configurar a API
+    no seu arquivo `api.py`, substitua: `API_KEY` por sua chave da OpenWeather.
+4. Execute o arquivo principal:
    `py main`
-4. Utilize o menu interativo no terminal para realizar simulações, visualizar resultados e comparar investimentos.
+5. Usar o sistema, 
 
 ## Principais Funcionalidades
 
