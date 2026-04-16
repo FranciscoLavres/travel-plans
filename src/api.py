@@ -55,14 +55,3 @@ def obter_clima(cidade):
     except Exception:
         print("Erro ao buscar clima. Verifique o nome da cidade.")
         return None
-
-
-def obter_cotacao_dolar():
-    try:
-        dados = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
-        dados_json = dados.json()
-        cotacao = dados_json["rates"]["BRL"]
-        return cotacao
-    except Exception:
-        print("Erro ao buscar cotacao do dolar.")
-        return None
