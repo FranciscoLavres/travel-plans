@@ -76,7 +76,10 @@ def mostrar_ranking(viagens):
     for viagem in viagens:
         viagem.score = calcular_score(viagem)
 
-    viagens_ordenadas = sorted(viagens, key=lambda v: v.score, reverse=True)
+    def pegar_score(v):
+        return v.score
+
+    viagens_ordenadas = sorted(viagens, key=pegar_score, reverse=True)
 
     posicao = 1
     for viagem in viagens_ordenadas:
