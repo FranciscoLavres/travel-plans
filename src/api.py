@@ -30,8 +30,22 @@ def obter_clima(cidade):
         geo = requests.get(f"https://geocoding-api.open-meteo.com/v1/search?name={cidade}&count=1")
         geo_json = geo.json()
 
-        latitude = geo_json["results"][0]["latitude"]
-        longitude = geo_json["results"][0]["longitude"]
+        resultado = geo_json["results"][0]
+        latitude = resultado["latitude"]
+        longitude = resultado["longitude"]
+
+        # Mostra a localizacao encontrada para o usuario confirmar
+        nome = resultado["name"]
+        regiao = resultado.get("admin1", "")
+        pais = resultado.get("country", "")
+        local_completo = f"{nome}, {regiao}, {pais}" if regiao else f"{nome}, {pais}"
+
+        print(f"\nLocalizacao encontrada: {local_completo}")
+        confirma = input("E essa a cidade correta? (s/n): ").lower()
+
+        if confirma != "s":
+            print("Busca cancelada. Tente novamente com outro nome.")
+            return None
 
         # Busca o clima usando as coordenadas
         clima = requests.get(
