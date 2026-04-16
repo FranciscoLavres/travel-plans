@@ -5,9 +5,9 @@ from src.utils import calcular_score
 def main():
     print("====== PLANO DE VIAGENS ======")
 
-    viagens = []
+    viagens = [] #Vai guardar todas as viagens que o usuário criar na lista
 
-    while True:
+    while True: #menu infinito, o programa só para quando o usuário escolher a opção de sair
         print("\n--- MENU ---")
         print("1 - Planejar uma viagem")
         print("2 - Ver ranking dos destinos")
@@ -16,14 +16,14 @@ def main():
         opcao = input("\nEscolha uma opcao: ")
 
         if opcao == "1":
-            planejar_viagem(viagens)
+            planejar_viagem(viagens) #chama a função de planejar viagem, passando a lista de viagens como argumento para ela poder adicionar novas viagens planejadas nessa lista
 
         elif opcao == "2":
             mostrar_ranking(viagens)
 
         elif opcao == "0":
             print("Ate logo!")
-            break
+            break   #Sai do programa (break para o loop)
 
         else:
             print("Opcao invalida!")
@@ -31,22 +31,22 @@ def main():
 
 # --- Planejar viagem ---
 
-def planejar_viagem(viagens):
+def planejar_viagem(viagens): #Essa função cria uma viagem
     try:
         pais = input("\nDiga o nome do pais (em ingles): ").lower()
         cidade = input("Diga o nome da cidade: ")
         orcamento = float(input("Seu orcamento previsto (R$): "))
-    except ValueError:
+    except ValueError:  
         print("Valor invalido! Digite um numero para o orcamento.")
         return
 
     try:
         viagem = Viagem(pais, cidade, orcamento)
-    except ValueError as erro:
+    except ValueError as erro:#valor invalido para funçao
         print(f"Erro: {erro}")
         return
 
-    sucesso = viagem.planejar_viagem()
+    sucesso = viagem.planejar_viagem() #calculo importado da classe viagem, ele vai calcular o custo aproximado e o clima, usando as funções da API
 
     if not sucesso:
         print("Nao foi possivel planejar essa viagem.")
@@ -56,12 +56,12 @@ def planejar_viagem(viagens):
     print(f"Custo estimado: R$ {viagem.custo_aproximado:.2f}")
     print(f"Clima: {viagem.clima}")
 
-    if viagem.pode_viajar():
+    if viagem.pode_viajar():    #Verifica se o orçamento é suficiente para a viagem, usando o método da classe Viagem
         print("Viagem possivel! OK")
     else:
         print("Orcamento insuficiente! X")
 
-    viagens.append(viagem)
+    viagens.append(viagem) #Guarda na lista de viagens a viagem que acabou de ser planejada, para ela aparecer no ranking depois
 
 
 # --- Ranking ---
