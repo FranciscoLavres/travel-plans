@@ -1,4 +1,4 @@
-# SISTEMA DE INVESTIMENTO
+# PLANEJAMENTO DE VIAGENS
 Integrantes: Francisco Lavres, Sophia Gois, Guilherme Soares, Larissa Azevedo, Gabriel Rosas
 
 Professor: Fernando Henrique Vieira Trindade
@@ -6,37 +6,36 @@ Professor: Fernando Henrique Vieira Trindade
 Universidade Tiradentes / SE
 
 ## Descrição do projeto
-Sistema em Python que planeja viagens com base em dados externos. Ele utiliza as APIs da OpenWeather e REST Countries 
-para obter clima e informações do país, calcula um custo estimado e verifica se a viagem é viável conforme o orçamento do usuário.
+Sistema em Python que planeja viagens com base em dados externos. Ele utiliza as APIs da OpenMeteo e REST Countries 
+para obter clima e informações do país, calcula um custo estimado e verifica se a viagem é viável conforme o orçamento do usuário, 
+após isto, o sistema armazena as viagens anteriores e da a opção de ranquear todas.
 ## Instruções de execução
 
 1. Certifique-se de ter o Python instalado (versão 3.x)
 2. Instale as dependências do projeto:
    `pip install -r requirements.txt`
-3. Configurar a API
-    no seu arquivo `api.py`, substitua: `API_KEY` por sua chave da OpenWeather.
-4. Execute o arquivo principal:
+3. Execute o arquivo principal:
    `py main`
-5. Usar o sistema, 
+4. Usar o sistema, 
 
 ## Principais Funcionalidades
 
-* **Simulação de investimento**
+* **Planejamento de Viagens**
   
-  Permite calcular o rendimento de um investimento com base em juros compostos e aportes mensais.
-* **Cálculo detalhado**
+  Permite ter um planejamento melhor com base na classificação do clima do destino e no orçamento disponivel.
+* **Integração com APIs externas**
 
-  Exibe o valor final, total investido e o lucro obtido (juros).
-* **Histórico da simulação**
+  Consome duas APIs para obter informações do clima (OpenMeteo) e da densidade demográfica (REST Countries).
+* **Análise de clima**
 
-  Mostra a evolução do saldo ao longo do tempo (mês a mês).
-* **Comparação de investimentos**
+  Análise de clima, o classificando como "bom", "normal" ou "ruim".
+* **Comparação de viagens**
 
-  Possibilita comparar diferentes cenários e identificar o mais vantajoso.
-* **Conversão de moeda**
+  Compara os destinos simulados e diz qual o melhor para ir com base no clima e preço.
+* **Calculo de custo da viagem**
 
-  Permite visualizar os resultados em reais ou em dólar por meio de integração com API de cotação.
+  Permite visualizar uma média de quanto vai custar a ida para o seu destino.
 
-* **Persistência de dados**
+* **Tratamento de erros**
 
-  Salva e carrega simulações utilizando arquivos JSON.
+  Caso ocorra algum erro, o próprio sistema irá tratá-lo.
