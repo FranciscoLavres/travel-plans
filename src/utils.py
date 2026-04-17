@@ -1,3 +1,11 @@
+'''
+A primeira calcula quanto tudo vai custar de fato, utilizando um valor base e um multiplicador que aumenta o
+valor dependendo do fator que recebeu previamente definido e do clima, que pode somar +1, +2 ou +3
+
+A segunda da um score para o objeto, com base no valor do preço e do clima, quanto menor o custo e melhor o clima,
+mais caro fica
+'''
+
 def calcular_custo(fator, clima):
     base = 1000
     multiplicador = fator

@@ -1,6 +1,9 @@
 from src.api import obter_densidade, obter_clima
 from src.utils import calcular_custo
 
+'''
+Cria o objeto Viagem, permite chamar dois métodos que necessitam manipular parametros no próprio objeto
+'''
 
 class Viagem:
 
@@ -20,10 +23,7 @@ class Viagem:
         self.custo_aproximado = 0
         self.clima = None
 
-    def pode_viajar(self):
-        return self.orcamento >= self.custo_aproximado
-
-    def planejar_viagem(self):
+    def classificando(self):
         try:
             densidade = obter_densidade(self.pais)
             clima = obter_clima(self.cidade)
@@ -39,3 +39,6 @@ class Viagem:
         except Exception:
             print("Erro ao planejar a viagem.")
             return False
+
+    def pode_viajar(self):
+        return self.orcamento >= self.custo_aproximado

@@ -1,16 +1,28 @@
-import requests #essa biblioteca serve para fazer requisições HTTP (acessar APIs na internet)
-                #requests faz isso via código.
+import requests
 
-def obter_densidade(nome): #nome do pais
+'''
+Área onde pega as informações necessárias das APIs, as duas são abertas e não necessitam de API_KEY.
+
+A primeira obtem a densidade demográfica do país a partir da divisão da população do país pela área em Km²,
+após isto transforma em um fator de multiplicação para depois calcular o custo da viagem
+
+A segunda pega a cidade destino e verifica o clima dela a partir da latitude e longitude, depois, 
+confirma com o usuário se o local está certo e retorna "ruim", "normal" ou "bom" a partir do clima atual na região.
+'''
+
+def obter_densidade(pais):
     try:
-        dados = requests.get(f"https://restcountries.com/v3.1/name/{nome}") #Faz uma requisição GET para a API restcountries
-        dados_json = dados.json()   #Converte a resposta da API (texto) em dicionário Python
-        #pegando valores
+        dados = requests.get(f"https://restcountries.com/v3.1/name/{pais}")
+        dados_json = dados.json()
         area_pais = dados_json[0]["area"]
         populacao_pais = dados_json[0]["population"]
         densidade = populacao_pais / area_pais
 
-        if densidade < 50: #aq tranformo um numero em fator/ Fator = um número que vai influenciar algum cálculo depoi
+        '''
+        Transformação da densidade demográfica para um fator que vai 
+        multiplicar o custo da viagem
+        '''
+        if densidade < 50:
             fator = 0.8
         elif densidade < 150:
             fator = 1.1
@@ -19,46 +31,44 @@ def obter_densidade(nome): #nome do pais
 
         return fator
 
-    except Exception: #exception é um erro generioco, se qualque erro acontecer ele faz iso ai embaixo
+    except Exception:
         print("Erro ao buscar dados do pais. Verifique o nome digitado.")
         return None
 
 
-def obter_clima(cidade): #recebe o nome de uma cidade e retorna se o clima é bom, normal ou ruim
+def obter_clima(cidade):
     try:
-        # Busca as coordenadas da cidade pelo nome
-        geo = requests.get(f"https://geocoding-api.open-meteo.com/v1/search?name={cidade}&count=1") #usa API de geolocalizaçao e converte nome da cidade em cordenadas
-        geo_json = geo.json() #Converte a resposta da API para um dicionário Python
-        #essa parte é acessar dados dentro de um JSON
-        resultado = geo_json["results"][0] #0 pq pega o 1 num da lista
-        latitude = resultado["latitude"]    #Pega o valor da chave "latitude"
+
+        dados = requests.get(f"https://geocoding-api.open-meteo.com/v1/search?name={cidade}&count=1")
+        dados_json = dados.json()
+
+        resultado = dados_json["results"][0]
+        latitude = resultado["latitude"]
         longitude = resultado["longitude"]
 
-        # Mostra a localizacao encontrada para o usuario confirmar
+        # Confirmação de localização
         nome = resultado["name"]
-        regiao = resultado.get("admin1", "") #get ta aq para evutar erro, ele tenta pegar o primmeor, se n der vai no outro
+        regiao = resultado.get("admin1", "") #Esse get tenta pegar o primeiro, se não der, o segundo é o valor padrão
         pais = resultado.get("country", "")
         local_completo = f"{nome}, {regiao}, {pais}" if regiao else f"{nome}, {pais}"
 
         print(f"\nLocalizacao encontrada: {local_completo}")
-        confirma = input("E essa a cidade correta? (s/n): ").lower() #converte tudo pro maisculo, para evitar erro de digitação do usuário
+        confirma = input("E essa a cidade correta? (s/n): ").lower()
 
-        if confirma != "s": #diferente de s
+        if confirma != "s":
             print("Busca cancelada. Tente novamente com outro nome.")
             return None
 
-        # Busca o clima usando as coordenadas
-        clima = requests.get(
-            f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true"
-        ) #faz uma requisição para a API de clima usando as coordenadas da cidade
-        clima_json = clima.json() #convete a resposta da API para um dicionário Python
+        clima = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true")
+        clima_json = clima.json()
 
-        codigo = clima_json["current_weather"]["weathercode"] #Pega o número que representa o clima
+        codigo = clima_json["current_weather"]["weathercode"]
 
-        # Codigos WMO:
-        # 0 = ceu limpo
-        # 1, 2, 3 = parcialmente nublado
-        # 51+ = chuva, neve, tempestade
+
+        ''' 0 = céu limpo
+            1, 2, 3 = parcialmente nublado
+            51+ = chuva, neve, tempestade '''
+
         if codigo == 0:
             return "bom"
         elif codigo <= 3:

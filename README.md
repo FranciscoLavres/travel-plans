@@ -13,9 +13,9 @@ após isto, o sistema armazena as viagens anteriores e da a opção de ranquear 
 
 1. Certifique-se de ter o Python instalado (versão 3.x)
 2. Instale as dependências do projeto:
-   `pip install -r requirements.txt`
+   `py -m pip install -r requirements`
 3. Execute o arquivo principal:
-   `py main`
+   `py -m main`
 4. Usar o sistema, 
 
 ## Principais Funcionalidades

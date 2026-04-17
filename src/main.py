@@ -1,13 +1,18 @@
 from src.models import Viagem
 from src.utils import calcular_score
 
+'''
+Define o main que vaii ser a interface onde o usuário interage e da possibilidade de chamar as funções que manipulam e 
+organizam as outras.
+'''
+
 
 def main():
     print("====== PLANO DE VIAGENS ======")
 
-    viagens = [] #Vai guardar todas as viagens que o usuário criar na lista
+    viagens = []
 
-    while True: #menu infinito, o programa só para quando o usuário escolher a opção de sair
+    while True:
         print("\n--- MENU ---")
         print("1 - Planejar uma viagem")
         print("2 - Ver ranking dos destinos")
@@ -16,14 +21,14 @@ def main():
         opcao = input("\nEscolha uma opcao: ")
 
         if opcao == "1":
-            planejar_viagem(viagens) #chama a função de planejar viagem, passando a lista de viagens como argumento para ela poder adicionar novas viagens planejadas nessa lista
+            planejar_viagem(viagens)
 
         elif opcao == "2":
             mostrar_ranking(viagens)
 
         elif opcao == "0":
             print("Ate logo!")
-            break   #Sai do programa (break para o loop)
+            break
 
         else:
             print("Opcao invalida!")
@@ -31,7 +36,7 @@ def main():
 
 # --- Planejar viagem ---
 
-def planejar_viagem(viagens): #Essa função cria uma viagem
+def planejar_viagem(viagens):
     try:
         pais = input("\nDiga o nome do pais (em ingles): ").lower()
         cidade = input("Diga o nome da cidade: ")
@@ -42,11 +47,11 @@ def planejar_viagem(viagens): #Essa função cria uma viagem
 
     try:
         viagem = Viagem(pais, cidade, orcamento)
-    except ValueError as erro:#valor invalido para funçao
+    except ValueError as erro:
         print(f"Erro: {erro}")
         return
 
-    sucesso = viagem.planejar_viagem() #calculo importado da classe viagem, ele vai calcular o custo aproximado e o clima, usando as funções da API
+    sucesso = viagem.classificando()
 
     if not sucesso:
         print("Nao foi possivel planejar essa viagem.")
@@ -56,12 +61,12 @@ def planejar_viagem(viagens): #Essa função cria uma viagem
     print(f"Custo estimado: R$ {viagem.custo_aproximado:.2f}")
     print(f"Clima: {viagem.clima}")
 
-    if viagem.pode_viajar():    #Verifica se o orçamento é suficiente para a viagem, usando o método da classe Viagem
+    if viagem.pode_viajar():
         print("Viagem possivel! OK")
     else:
         print("Orcamento insuficiente! X")
 
-    viagens.append(viagem) #Guarda na lista de viagens a viagem que acabou de ser planejada, para ela aparecer no ranking depois
+    viagens.append(viagem)
 
 
 # --- Ranking ---
@@ -83,7 +88,7 @@ def mostrar_ranking(viagens):
 
     posicao = 1
     for viagem in viagens_ordenadas:
-        print(f"\n{posicao} lugar: {viagem.cidade}, {viagem.pais}")
+        print(f"\n{posicao}º lugar: {viagem.cidade}, {viagem.pais}")
         print(f"   Clima: {viagem.clima}")
         print(f"   Custo: R$ {viagem.custo_aproximado:.2f}")
         print(f"   Pontuacao: {viagem.score:.1f}")
