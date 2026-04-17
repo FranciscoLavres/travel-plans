@@ -53,7 +53,7 @@ def obter_clima(cidade):
         local_completo = f"{nome}, {regiao}, {pais}" if regiao else f"{nome}, {pais}"
 
         print(f"\nLocalizacao encontrada: {local_completo}")
-        confirma = input("E essa a cidade correta? (s/n): ").lower()
+        confirma = input("É essa a cidade correta? (s/n): ").lower()
 
         if confirma != "s":
             print("Busca cancelada. Tente novamente com outro nome.")

@@ -33,7 +33,7 @@ class Viagem:
                 return False
 
             self.clima = clima
-            self.custo_aproximado = calcular_custo(densidade, clima)
+            self.custo_aproximado = calcular_custo(densidade, self.clima)
             return True
 
         except Exception:
